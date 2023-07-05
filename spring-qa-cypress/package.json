@@ -1,0 +1,58 @@
+{
+  "name": "spring-qa-cypress",
+  "version": "1.0.0",
+  "description": "Cypress e2e automation tests",
+  "main": "index.js",
+  "scripts": {
+    "cy:qa:regression": "cypress run -s cypress/e2e/regression-tests --env ENV=qa -e TAGS='@regression'",
+    "cy:qa:regression:allure:record": "npm run cy:qa:regression --record --key 9b33f979-2dc8-410b-b2be-8ef1e0bc2944 --parallel",
+    "allure:report": "allure generate cypress/reports/allure-results --clean -o cypress/reports/allure-report",
+    "cy:qa:test:allure": "npm run cy:qa:regression || npm run allure:report",
+    "cy:qa:test:allure:record": "npm run cy:qa:regression:allure:record || npm run allure:report",
+    "cy:qa:regression:cucumber": "cypress run --env ENV=qa -e TAGS='@regression' || node cucumber-html.js",
+    "cy:qa:regression:cucumber:record": "cypress run --env ENV=qa -e TAGS='@regression' --record --key 9b33f979-2dc8-410b-b2be-8ef1e0bc2944 --parallel || node cucumber-html.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/recyclabox/spring-qa-cypress.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/recyclabox/spring-qa-cypress/issues"
+  },
+  "homepage": "https://github.com/recyclabox/spring-qa-cypress#readme",
+  "dependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^16.0.3",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.0",
+    "@faker-js/faker": "^7.6.0",
+    "@shelex/cypress-allure-plugin": "^2.40.0",
+    "allure-commandline": "^2.22.4",
+    "cypress": "^12.10.0",
+    "cypress-mochawesome-reporter": "^3.5.0",
+    "cypress-slack-notify": "^1.14.1",
+    "cypress-split": "^1.3.13",
+    "jsonwebtoken": "^9.0.0",
+    "jwt-decode": "^3.1.2",
+    "multiple-cucumber-html-reporter": "^3.4.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  },
+  "cypress-cucumber-preprocessor": {
+    "step_definitions": "cypress/support/step_definitions/*.{js,ts}",
+    "nonGlobalStepDefinitions": true,
+    "html": {
+      "enabled": true,
+      "output": "cypress/reports/cucumber-html/cucumber-report.html"
+    },
+    "messages": {
+      "enabled": true,
+      "output": "cypress/reports/cucumber-ndjson/cucumber-report.ndjson"
+    },
+    "json": {
+      "enabled": true,
+      "formatter": "cypress/reports/cucumber-json-formatter",
+      "output": "cypress/reports/cucumber-json/{}.json"
+    }
+  }
+}
